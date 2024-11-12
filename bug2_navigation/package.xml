@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>bug2_navigation</name>
+  <version>0.0.0</version>
+  <description>Package for Bug2 navigation algorithm</description>
+  <maintainer email="rocotics@todo.todo">rocotics</maintainer>
+  <license>TODO: License declaration</license>
+
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <build_depend>rclpy</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>bug2_interfaces</build_depend>  
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>bug2_interfaces</exec_depend>   
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
