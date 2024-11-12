@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+REPO_DIR="$(pwd)"
+WORKSPACE_DIR="$HOME/ros2_ws"
+
+usage() {
+  echo "This script sources your ros2 workspace such that ros2 commands work in terminal"
+  echo "For this to apply to your terminal properly, run it using \". source\""
+  echo "Usage: $0 [-r, --repo <repo_dir>] [-w, --workspace <workspace_dir>]"
+  echo "       $0 [-h, --help: Show this help]"
+  echo ""
+  echo "Options:"
+  echo "  -r, --repo <repo_dir>             Specify the repo directory. Defaults to CWD"
+  echo "  -w, --workspace <workspace_dir>   Specify the workspace directory. Defaults to: ~/ros2_ws"
+  echo "  -h, --help                        Show this help"
+  exit 0
+}
+
+# Parse commandline options
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    -r|--repo)
+      REPO_DIR="$2"
+      shift 2
+      ;;
+    -w|--workspace)
+      WORKSPACE_DIR="$2"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      ;;
+    --) # end of all options
+      shift
+      break
+      ;;
+    -?*) # unknown option
+      echo "Unknown option: $1"
+      usage
+      ;;
+    *) # no more options
+      break
+      ;;
+  esac
+done
+
+# Check if the REPO_DIR exists and is a directory
+if [ ! -d "$REPO_DIR" ]; then
+  echo "Error: $REPO_DIR is not a valid directoty."
+  exit 1
+fi
+
+# Check if the TARGET_DIR exists and is a directory
+if [ ! -d "$WORKSPACE_DIR" ]; then
+  echo "Error: $WORKSPACE_DIR is not a valid directoty."
+  exit 1
+fi
+
+source "$WORKSPACE_DIR/install/setup.bash"
