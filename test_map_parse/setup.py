@@ -22,6 +22,7 @@ setup(
             "test_map_parse = test_map_parse.test_map_parse:main",
             "test_nav = test_map_parse.test_nav:main",
             "gotopoint = test_map_parse.gotopoint:main",
+            "move_service_server = test_map_parse.move_service_server:main",
         ],
     },
 )
