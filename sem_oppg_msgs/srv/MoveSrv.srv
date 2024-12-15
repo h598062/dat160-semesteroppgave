@@ -1,4 +1,4 @@
-float64 x
-float64 y
+bool move_switch
+geometry_msgs/Point target_position
 ---
-bool result
+bool success
