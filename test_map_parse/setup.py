@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'test_map_parse = test_map_parse.test_map_parse:main'
+            'test_map_parse = test_map_parse.test_map_parse:main',
+            'move_service_server = test_map_parse.move_service_server:main'
         ],
     },
 )
