@@ -12,6 +12,12 @@ def generate_launch_description():
         namespace=tb1,
         parameters=[{"namespace": tb1}],
     )
+    tb1_ad = Node(
+        package="final_iteration",
+        executable="aruco_detector",
+        namespace=tb1,
+        parameters=[{"namespace": tb1, "preview": False}],
+    )
     tb1_controller = Node(
         package="final_iteration",
         executable="final_iteration",
@@ -24,10 +30,18 @@ def generate_launch_description():
         namespace=tb2,
         parameters=[{"namespace": tb2}],
     )
+    tb2_ad = Node(
+        package="final_iteration",
+        executable="aruco_detector",
+        namespace=tb2,
+        parameters=[{"namespace": tb2, "preview": False}],
+    )
     tb2_controller = Node(
         package="final_iteration",
         executable="final_iteration",
         namespace=tb2,
         parameters=[{"namespace": tb2}],
     )
-    return launch.LaunchDescription([tb1_wf, tb2_wf, tb1_controller, tb2_controller])
+    return launch.LaunchDescription(
+        [tb1_wf, tb2_wf, tb1_controller, tb2_controller, tb1_ad, tb2_ad]
+    )

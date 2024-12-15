@@ -6,6 +6,7 @@ from std_srvs.srv import SetBool
 from std_msgs.msg import Int64
 from nav_msgs.msg import Odometry
 import numpy as np
+from rclpy.qos import qos_profile_sensor_data
 
 
 class FinalIteration(Node):
@@ -33,7 +34,10 @@ class FinalIteration(Node):
             Odometry, self.namespace + "/odom", self.odom_clbk, 10
         )
         self.marker_sub = self.create_subscription(
-            Int64, self.namespace + "/marker_id", self.marker_clbk, 10
+            Int64,
+            self.namespace + "/aruco_marker_scan",
+            self.marker_clbk,
+            qos_profile_sensor_data,
         )
 
         self.position: Point = Point()
@@ -60,7 +64,7 @@ class FinalIteration(Node):
         x = int(self.position.x)
         y = int(self.position.y)
         key = f"{x},{y}"
-        if self.last_marker != id or self.found_markers.get(key) is None:
+        if self.found_markers.get(key) is None:
             self.found_markers[key] = id
             self.get_logger().info(f"Found marker at position {key} with id {id}")
             self.last_marker = id

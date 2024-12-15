@@ -27,6 +27,7 @@ setup(
         "console_scripts": [
             "final_iteration = final_iteration.final_iteration:main",
             "wall_follower = final_iteration.wall_follower:main",
+            "aruco_detector = final_iteration.aruco_detector:main",
         ],
     },
 )
