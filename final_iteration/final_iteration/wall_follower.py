@@ -1,27 +1,43 @@
 import rclpy
-from rclpy.node import Node
+from rclpy.node import Node, ParameterDescriptor
+from rclpy.parameter import ParameterType
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 from std_srvs.srv import SetBool
 
 
 class WallFollower(Node):
-    def __init__(self):
-        super().__init__("wall_follower")
-        self.get_logger().info("Startet WallFollower.")
+    def __init__(self, name="wall_follower"):
+        super().__init__(name)
 
-        self.publisher_ = self.create_publisher(Twist, "/cmd_vel", 10)
+        self.declare_parameter(
+            name="namespace",
+            value="",
+            descriptor=ParameterDescriptor(
+                type=ParameterType.PARAMETER_STRING,
+                description="Namespace for the program for finding correct topics, should correspond to turtlebot namespace",
+            ),
+        )
+        self.namespace = (
+            self.get_parameter("namespace").get_parameter_value().string_value
+        )
+        self.get_logger().info(
+            f"Startet WallFollower, using namespace {self.namespace}."
+        )
+        self.publisher_ = self.create_publisher(Twist, self.namespace + "/cmd_vel", 10)
         self.subscriber_ = self.create_subscription(
-            LaserScan, "/scan", self.scan_callback, 10
+            LaserScan, self.namespace + "/scan", self.scan_callback, 10
         )
 
         # Service server
         self.srvserver = self.create_service(
-            SetBool, "wall_follower_service", self.handle_wall_follower
+            SetBool,
+            self.namespace + "/wall_follower_service",
+            self.handle_wall_follower,
         )
 
-        self.wall_distance = 0.5  # Distanse fra veggen
-        self.front_distance_threshold = 0.6  # Distanse for å oppdage en vegg foran
+        self.wall_distance = 1.0  # Distanse fra veggen
+        self.front_distance_threshold = 1.3  # Distanse for å oppdage en vegg foran
         self.turning_speed = 0.5  # Hastighet for å snu seg venstre/høyre
         self.forward_speed = 0.3  # Hastighet for å bevege seg framover
         self.turning_counter = 0  # Liten variabel for å sørge for at roboten klarer å snu seg helt til andre siden av veggen
